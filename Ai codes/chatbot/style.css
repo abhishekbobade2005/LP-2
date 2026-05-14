@@ -1,0 +1,21 @@
+
+.chatbox{
+    width:300px;
+    border:1px solid black;
+ 
+}
+
+#chat{
+    height:200px;
+    border:1px solid gray;
+    overflow:auto;
+ 
+}
+
+.user{
+    text-align:right;
+}
+
+.bot{
+    text-align:left;
+}
