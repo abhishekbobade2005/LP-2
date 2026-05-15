@@ -1,0 +1,638 @@
+Assignment_9
+
+REPO:
+https://github.com/devesh-bhangale-7789/mern-blog       // Assign_9
+https://github.com/devesh-bhangale-7789/student-mana    // Assign_10
+https://github.com/devesh-bhangale-7789/ecomm-app       // Assign_11
+https://github.com/devesh-bhangale-7789/task-mana       // Assign_13
+https://github.com/devesh-bhangale-7789/todo-app        // Assign_14
+https://github.com/devesh-bhangale-7789/event-app       // Assign_15
+
+
+====================================================
+COMPLETE MERN BLOG DEPLOYMENT ON AWS EC2
+(Frontend + Backend + MongoDB Atlas)
+====================================================
+
+
+====================================================
+1. CREATE MONGODB ATLAS CLUSTER
+====================================================
+
+Step 1 — Open MongoDB Atlas
+
+Open:
+https://www.mongodb.com/atlas/database
+
+Click:
+Try Free
+
+
+----------------------------------------------------
+
+Step 2 — Create Account
+
+Login using:
+- Google
+- GitHub
+- Email
+
+
+----------------------------------------------------
+
+Step 3 — Create New Project
+
+Left Side:
+Organization > Projects
+
+Click:
+New Project
+
+Project Name:
+Blog App
+
+Click:
+Next
+
+Then:
+Create Project
+
+
+----------------------------------------------------
+
+Step 4 — Build Database
+
+Click:
+Build a Database
+
+
+----------------------------------------------------
+
+Step 5 — Choose Cluster Settings
+
+Choose:
+
+Plan:
+FREE
+
+Provider:
+AWS
+
+Region:
+Mumbai
+
+Cluster Name:
+Cluster0
+
+Disable:
+Load Sample Dataset
+
+Keep security setup enabled.
+
+Click:
+Create Deployment
+
+Wait 1–3 minutes.
+
+
+----------------------------------------------------
+
+Step 6 — Create Database User
+
+You will see:
+Create Database User
+
+Fill:
+
+Authentication Method:
+Password
+
+Username:
+blogadmin
+
+Password:
+BlogApp123
+
+Privileges:
+Read and write to any database
+
+Click:
+Create User
+
+
+----------------------------------------------------
+
+Step 7 — Add IP Address
+
+Click:
+Add IP Address
+
+Choose:
+Allow Access From Anywhere
+
+It adds:
+0.0.0.0/0
+
+Comment:
+AWS EC2 Access
+
+Click:
+Confirm
+
+Wait until status becomes:
+Active
+
+
+----------------------------------------------------
+
+Step 8 — Get MongoDB Connection String
+
+Left Side:
+Database
+
+Open:
+Cluster0
+
+Click:
+Connect
+
+Choose:
+Drivers
+
+Driver:
+Node.js
+
+Version:
+Latest
+
+Copy connection string:
+
+mongodb+srv://blogadmin:<db_password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+
+Replace:
+<db_password>
+
+with:
+BlogApp123
+
+Final Example:
+
+mongodb+srv://blogadmin:BlogApp123@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+
+
+====================================================
+2. CREATE AWS EC2 INSTANCE
+====================================================
+
+Step 9 — Open AWS Console
+
+Open:
+https://aws.amazon.com/console/
+
+
+----------------------------------------------------
+
+Step 10 — Open EC2
+
+Search:
+EC2
+
+Open:
+EC2 Dashboard
+
+
+----------------------------------------------------
+
+Step 11 — Launch Instance
+
+Click:
+Launch Instance
+
+
+----------------------------------------------------
+
+Step 12 — Configure Instance
+
+Name:
+mern-blog-server
+
+AMI:
+Ubuntu Server 24.04 LTS
+
+Instance Type:
+t2.micro
+
+
+----------------------------------------------------
+
+Step 13 — Create Key Pair
+
+Click:
+Create New Key Pair
+
+Name:
+mern-blog-key
+
+Type:
+RSA
+
+Format:
+.pem
+
+Click:
+Create Key Pair
+
+.pem file downloads automatically.
+
+
+----------------------------------------------------
+
+Step 14 — Configure Security Group
+
+Add Inbound Rules:
+
+Type          Port      Source
+-----------------------------------
+SSH           22        0.0.0.0/0
+HTTP          80        0.0.0.0/0
+HTTPS         443       0.0.0.0/0
+Custom TCP    5000      0.0.0.0/0
+Custom TCP    5173      0.0.0.0/0
+
+
+----------------------------------------------------
+
+Step 15 — Launch Instance
+
+Click:
+Launch Instance
+
+Wait until:
+Running
+
+
+----------------------------------------------------
+
+Step 16 — Copy Public IPv4
+
+Example:
+13.xx.xx.xx
+
+
+====================================================
+3. CONNECT TO EC2
+====================================================
+
+Step 17 — Connect EC2
+
+Select Instance
+
+Click:
+Connect
+
+Choose:
+EC2 Instance Connect
+
+Click:
+Connect
+
+
+====================================================
+4. UPDATE EC2
+====================================================
+
+Step 18 — Update Ubuntu
+
+Run:
+
+sudo apt update && sudo apt upgrade -y
+
+
+----------------------------------------------------
+
+Step 19 — Install Git
+
+Run:
+
+sudo apt install git -y
+
+
+====================================================
+5. INSTALL NODE.JS
+====================================================
+
+Step 20 — Install Node.js 20
+
+Run:
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+
+Then run:
+
+sudo apt install -y nodejs
+
+
+----------------------------------------------------
+
+Step 21 — Verify Installation
+
+Run:
+
+node -v
+
+Then:
+
+npm -v
+
+
+====================================================
+6. CLONE PROJECT
+====================================================
+
+Step 22 — Clone Repository
+
+Run:
+
+git clone https://github.com/devesh-bhangale-7789/mern-blog.git
+
+
+----------------------------------------------------
+
+Step 23 — Open Project Folder
+
+Run:
+
+cd mern-blog
+
+
+====================================================
+7. BACKEND SETUP
+====================================================
+
+Step 24 — Go to Backend Folder
+
+Run:
+
+cd ~/mern-blog/backend
+
+
+----------------------------------------------------
+
+Step 25 — Install Backend Packages
+
+Run:
+
+npm install
+
+
+----------------------------------------------------
+
+Step 26 — Create .env File
+
+Run:
+
+nano .env
+
+
+----------------------------------------------------
+
+Step 27 — Paste Backend Environment Variables
+
+Paste:
+
+PORT=5000
+MONGODB_URI=mongodb+srv://blogadmin:BlogApp123@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+
+
+----------------------------------------------------
+
+Step 28 — Save .env File
+
+Press:
+
+CTRL + O
+Enter
+CTRL + X
+
+
+----------------------------------------------------
+
+Step 29 — Start Backend
+
+Run:
+
+npm run dev
+
+
+Expected Output:
+
+MongoDB connected
+Server running on port 5000
+
+IMPORTANT:
+Keep this terminal open.
+
+
+====================================================
+8. FRONTEND SETUP
+====================================================
+
+Step 30 — Open NEW EC2 Terminal
+
+Reconnect using:
+EC2 Instance Connect
+
+
+----------------------------------------------------
+
+Step 31 — Go to Frontend Folder
+
+Run:
+
+cd ~/mern-blog/frontend
+
+
+----------------------------------------------------
+
+Step 32 — Install Frontend Packages
+
+Run:
+
+npm install
+
+
+----------------------------------------------------
+
+Step 33 — Create Frontend .env
+
+Run:
+
+nano .env
+
+
+----------------------------------------------------
+
+Step 34 — Paste Frontend Environment Variable
+
+Paste:
+
+VITE_API_URL=http://YOUR_PUBLIC_IP:5000/api
+
+Example:
+
+VITE_API_URL=http://13.xx.xx.xx:5000/api
+
+
+----------------------------------------------------
+
+Step 35 — Save .env
+
+Press:
+
+CTRL + O
+Enter
+CTRL + X
+
+
+----------------------------------------------------
+
+Step 36 — Start Frontend
+
+Run:
+
+npm run dev -- --host
+
+IMPORTANT:
+Use exactly:
+
+npm run dev -- --host
+
+NOT:
+
+npm run dev
+
+
+----------------------------------------------------
+
+Step 37 — Expected Output
+
+You should see:
+
+VITE ready
+
+Local: localhost:5173
+Network: 172.xx.xx.xx:5173
+
+
+====================================================
+9. OPEN WEBSITE
+====================================================
+
+Step 38 — Open Website
+
+In laptop browser open:
+
+http://YOUR_PUBLIC_IP:5173
+
+Example:
+
+http://13.xx.xx.xx:5173
+
+DO NOT use:
+172.xx.xx.xx
+
+
+====================================================
+10. IF WEBSITE NOT OPENING
+====================================================
+
+Step 39 — Check Frontend Command
+
+Must use:
+
+npm run dev -- --host
+
+
+----------------------------------------------------
+
+Step 40 — Check Security Group
+
+Ports must exist:
+
+22
+80
+443
+5000
+5173
+
+Source:
+0.0.0.0/0
+
+
+----------------------------------------------------
+
+Step 41 — Check Backend Running
+
+Backend terminal must show:
+
+MongoDB connected
+Server running on port 5000
+
+
+----------------------------------------------------
+
+Step 42 — Check Firewall
+
+Run:
+
+sudo ufw status
+
+If active:
+
+sudo ufw allow 5000
+
+sudo ufw allow 5173
+
+
+====================================================
+11. STOP EVERYTHING
+====================================================
+
+Step 43 — Stop Frontend
+
+Press:
+
+CTRL + C
+
+
+----------------------------------------------------
+
+Step 44 — Stop Backend
+
+Press:
+
+CTRL + C
+
+
+----------------------------------------------------
+
+Step 45 — Stop EC2
+
+AWS EC2 Dashboard
+
+Instance State:
+Stop Instance
+
+
+----------------------------------------------------
+
+Step 46 — Delete MongoDB Cluster (Optional)
+
+MongoDB Atlas
+
+Database > Cluster0 > Delete
+
+
+====================================================
+DEPLOYMENT COMPLETE
+====================================================
